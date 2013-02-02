@@ -766,7 +766,8 @@ hibernate_begin(hibernate_state_t new_state, time_t now)
   }
 
   /* close listeners. leave control listener(s). */
-  connection_mark_all_noncontrol_listeners();
+  //connection_mark_all_noncontrol_listeners();
+  connection_mark_all_servers();
 
   /* XXX kill intro point circs */
   /* XXX upload rendezvous service descriptors with no intro points */

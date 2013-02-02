@@ -2107,6 +2107,24 @@ connection_mark_all_noncontrol_listeners(void)
   } SMARTLIST_FOREACH_END(conn);
 }
 
+/* Mark every listener. */
+void
+connection_mark_all_servers(void)
+{
+	log_notice(LD_ACCT,"Entering Hibernation, Closing server handlers.");
+  SMARTLIST_FOREACH_BEGIN(get_connection_array(), connection_t *, conn) {
+		switch (conn->type) {
+		case CONN_TYPE_OR_LISTENER:
+			log_notice(LD_ACCT,"Closing OR listener: %s:%d", safe_str_client(conn->address), conn->port);
+			//connection_close_immediate(conn);
+			if (!(conn->marked_for_close)) {
+				connection_mark_for_close(conn);
+			}
+			break;
+		}
+  } SMARTLIST_FOREACH_END(conn);
+}
+
 /** Mark every external connection not used for controllers for close. */
 void
 connection_mark_all_noncontrol_connections(void)
